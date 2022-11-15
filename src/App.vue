@@ -1,8 +1,33 @@
 <script setup lang="ts">
+import useLoading from "./hooks/useLoading";
+import useVisible from "./hooks/useVisible";
+const { isLoading, loadingWrapper } = useLoading();
+const { visible, toggleVisible } = useVisible();
+const getData = () => {
+  loadingWrapper(
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    })
+  );
+};
 </script>
 
 <template>
-  <a-button>a button</a-button>
+  <a-row type="flex" align="middle" style="min-width: 800px">
+    <a-col :span="8">
+      <a-button size="large" :loading="isLoading" v-if="visible"
+        >a button</a-button
+      >
+    </a-col>
+    <a-col :span="4">
+      <a-button shape="round" size="small" @click="getData">enter loading</a-button>
+    </a-col>
+    <a-col :span="2">
+      <a-switch :checked="visible" @click="toggleVisible" />
+    </a-col>
+  </a-row>
 </template>
 
 <style scoped>
